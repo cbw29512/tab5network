@@ -7,7 +7,7 @@ This is a **living, append-only record** of work, including features that are la
 - The script checks two independent 16MB firmware backup files and private TNK1 manifest SHA-256, ESP32-P4/16MB flash identity, and filters **only** `SECURE_BOOT_EN` and `SPI_BOOT_CRYPT_CNT` read-only eFuse values; refuses enabled/unreadable security features.
 - It takes the expected display-controller input `ST7121` from the user's **earlier real device runtime logs** (board version 3; LCD ST7121 and ST712x touch). The physical rear sticker remains uninspected; on-device LCD/touch success still needs testing.
 - The 512GB microSD remains inside the unit by operator preference. This first UI firmware has no application SD I/O, and PlatformIO programs ESP32-P4 internal flash rather than the SD. A separate SD backup is not verified and this residual risk remains visible.
-- Updated build-only script to call `python -m platformio` rather than relying on `pio.exe` being on the Windows PATH. Source-level CI and laptop execution are pending for this update.
+- Updated build-only script to call `python -m platformio` rather than relying on `pio.exe` being on the Windows PATH. **Verified source-level:** GitHub Actions [firmware run 43458569970](https://github.com/cbw29512/tab5network/actions/runs/43458569970) passed C++ core, Windows PowerShell syntax and ESP32-P4 compile at `7e43329`; [documentation run 43458569726](https://github.com/cbw29512/tab5network/actions/runs/43458569726) passed. Actual Windows preflight, eFuse checks and upload remain pending.
 - No upload, erase, factory recovery, SD formatting or observed touchscreen run is claimed.
 
 ## 2026-11-13 — On-screen buttons replace the face; user reports backup verified
