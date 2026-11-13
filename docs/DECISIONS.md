@@ -71,6 +71,15 @@ Use a new numbered entry when any existing decision is amended. Keep the old ent
 - Implementation: `src/main.cpp` already draws the `Controller` Home state immediately following display initialization, and `src/screens.cpp` renders six on-screen buttons. Add source-level navigation assertions and physical acceptance case UI-00.
 - Verification: C++ CI must pass; actual display behavior is unverified until flashing after backup, SD preservation, LCD revision and recovery checks. The current old firmware has **not** been modified.
 
+## ADR-011 — Guarded one-command touchscreen flash using prior ST7121 runtime identification
+- Date: 2026-11-13
+- Status: **accepted**
+- Context: The operator explicitly requested pushing the six-button UI via Windows USB. Prior Tab5 runtime logs (2026-11-11) identified board version 3, LCD **ST7121**, touch ST712x. The user wants the original 512 GB microSD to remain in the device, and reports firmware backups verified.
+- Decision: provide a preflight-first PowerShell script on the development branch. It verifies two private full 16 MB images, rejects unexpected USB hardware, checks security eFuses without exposing secrets, compiles with pinned PlatformIO dependencies, and only flashes after explicit `-Upload` and typed confirmation.
+- Data/state: PRECHECK -> BACKUP_VERIFIED -> SECURITY_OK -> BUILT -> UPLOADED (or STOP). The microSD is not mounted or modified by the UI preview; independent SD backup remains unverified.
+- Safety: do not erase the whole chip or use `--force`; stop on unresolved eFuse state or hash mismatch. Preserve raw backup privately and validate recovery if restoration is needed.
+- Verification: Linux firmware CI passed before this script; Windows PowerShell syntax, first hardware upload and LCD touch acceptance pending at entry.
+
 ## Decision template
 ```markdown
 ## ADR-NNN — Title

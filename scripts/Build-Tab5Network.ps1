@@ -5,9 +5,14 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 try {
-    $pio = Get-Command pio -ErrorAction SilentlyContinue
-    if ($null -eq $pio) {
-        throw "PlatformIO CLI not found. Install it before running this script."
+    # Calling the Python module avoids Windows PATH setup for pio.exe.
+    $python = Get-Command python -ErrorAction SilentlyContinue
+    if ($null -eq $python) {
+        throw "Python is missing; install Python 3.12 first."
+    }
+    & python -m platformio --version
+    if ($LASTEXITCODE -ne 0) {
+        throw "PlatformIO module missing. Run: python -m pip install --user platformio==6.1.18"
     }
     $config = Join-Path $repo "platformio.ini"
     if (-not (Test-Path -LiteralPath $config)) {
@@ -16,7 +21,7 @@ try {
     Push-Location $repo
     try {
         Write-Host "Building pinned ESP32-P4 source. NO DEVICE UPLOAD."
-        & $pio.Source run -e tab5
+        & python -m platformio run -e tab5
         if ($LASTEXITCODE -ne 0) { throw "PlatformIO build exited $LASTEXITCODE." }
         $binary = Join-Path $repo ".pio\build\tab5\firmware.bin"
         if (-not (Test-Path -LiteralPath $binary)) {

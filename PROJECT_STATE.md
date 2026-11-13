@@ -3,7 +3,7 @@
 **Project:** Tab5 Network Tester (working name Pocket Kali)  
 **Last reviewed:** 2026-11-13  
 **Source of truth:** GitHub `cbw29512/tab5network` main branch  
-**Current phase:** Touch UI source verified by CI compilation and host tests; physical Tab5 USB flashing, touch operation, Wi-Fi and backups remain NOT verified.
+**Current phase:** Touch UI source compiled and guarded Windows flashing script committed; physical Tab5 installation, touchscreen operation and network diagnostics remain NOT verified.
 
 ## Current verified facts
 - User selected a visual six-button touchscreen network tester, standalone for basic tests.
@@ -33,7 +33,10 @@
 - Actual verified build binaries, flash/restore tests or release tags. Toolchain versions have been selected from upstream documentation but are not yet a successful build.
 
 - **User-verified 2026-11-13:** the operator reported the private two-pass firmware backup as verified. The final PASS/hash output was not independently supplied or inspected; record this as **user-reported verified**, not independently certified. Continue to protect the private images and do not commit them to GitHub.
-- **Startup UI contract:** the former Pocket DM face/avatar will not appear in the replacement firmware. The six touch buttons are the home screen immediately after display initialization. Current source already draws Home at startup; physical installation/testing remains pending.
+- **Startup UI contract:** the former Pocket DM face/avatar will not appear in the replacement firmware. Six touch buttons are the home screen immediately after display initialization; physical installation/testing pending.
+- **Prior physical-runtime observation, 2026-11-11:** the user's existing Tab5 boot logs reported board version 3, **LCD ST7121 / ST712x touch**. This is software-reported evidence rather than the rear-sticker marking; no controller model inferred from the ESP32-P4 chip itself.
+- **Guarded installation script committed, 2026-11-13:** `scripts/Flash-Tab5Network.ps1` checks private double-read backup and hashes, ESP32-P4/16MB COM port, security eFuses, expected ST7121 runtime variant and build; defaults to no upload and requires `-Upload` plus typed confirmation before writing. New firmware CI and on-laptop execution pending.
+- The operator has previously specified that the 512GB microSD **stays in the Tab5**. The replacement source contains no direct microSD access and the upload tool programs ESP32-P4 internal SPI flash; there is no evidence of an independent microSD copy. Preservation and residual recovery risks remain documented.
 
 ## Locked product decisions
 1. Touch-first UI with large buttons. No terminal entry on the Tab5.
@@ -45,7 +48,7 @@
 7. GitHub is canonical. Every feature/change/removal updates documentation with code.
 
 ## Immediate next work item (one at a time)
-**Preserve the operator-reported verified dual-read firmware backup.** The final matching-hash output was not independently shared; independently review the private manifest and hashes locally before flashing. Next: separate private microSD backup, confirm the LCD revision sticker, assess restore feasibility, then perform a local Windows build. Preserve the created directory privately and report only PASS/FAIL, backup sizes, and matching hash (not raw images or private device identifiers). Independently back up the microSD, record LCD sticker revision, and assess secure-boot/flash-encryption restoration limitations. No firmware upload until all backup and restore gates are met.
+**Bring up the guarded Windows preflight first, then explicitly upload only after its gates pass.** A previous runtime log already reports ST7121 LCD; the script independently validates the private dual-read flash backup and secure boot/encryption state. The operator wants to retain the microSD in the unit; the preview has no SD access, but separate microSD backup is unverified. Use `-Upload` with explicit typed confirmation only after the preflight checks succeed. Preserve the created directory privately and report only PASS/FAIL, backup sizes, and matching hash (not raw images or private device identifiers). Independently back up the microSD, record LCD sticker revision, and assess secure-boot/flash-encryption restoration limitations. No firmware upload until all backup and restore gates are met.
 
 ## Evidence for next milestone
 - Redacted Windows port listing; exact LCD sticker text.

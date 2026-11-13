@@ -93,7 +93,19 @@ try {
 } catch { Write-Error "Tab5 build error: $($_.Exception.Message)" }
 ```
 
-Install PlatformIO CLI beforehand if `pio` is not on PATH. The USB device need not be connected to compile. **Do not run `pio run -t upload`** before backups. A future `scripts/Flash-Tab5Network.ps1` will perform preflight checks and fail closed on missing backups, unexpected flash size, board revisions or ambiguous COM ports. **The guarded flash script does not exist.** The build script is committed but the actual Windows run is not yet certified.
+Install the pinned PlatformIO Python module (the wrapper uses `python -m platformio`, so `pio.exe` does not need to be on PATH):
+
+```powershell
+try {
+    $ErrorActionPreference = 'Stop'
+    python -m pip install --user 'platformio==6.1.18'
+    if ($LASTEXITCODE -ne 0) { throw 'PlatformIO installation failed' }
+    python -m platformio --version
+    if ($LASTEXITCODE -ne 0) { throw 'PlatformIO module unavailable' }
+} catch { Write-Error "PlatformIO setup failed: $($_.Exception.Message)" }
+```
+
+Then use the build-only script or the guarded flash workflow in [FLASH_RECOVERY.md](FLASH_RECOVERY.md). The USB device need not be connected to compile. **Do not run `pio run -t upload`** before backups. A future `scripts/Flash-Tab5Network.ps1` will perform preflight checks and fail closed on missing backups, unexpected flash size, board revisions or ambiguous COM ports. **The guarded flash script does not exist.** The build script is committed but the actual Windows run is not yet certified.
 
 ## 6. Never commit machine-specific settings
 Do not check in: `.env`, Wi-Fi credentials, local COM-port choices, firmware dumps, SD images, credentials, or real network reports. Generate and commit a redacted test log and source commit SHA only.

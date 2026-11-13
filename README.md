@@ -40,7 +40,10 @@ Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens
 
 The pinned `platformio.ini` uses pioarduino `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`, matching the M5Stack minimum for recent display revisions. GitHub firmware compile runs in `.github/workflows/firmware-source.yml`.
 
-Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Inspect-Tab5.ps1` (review the script first; scoped to child process). Build without flashing: `powershell -NoProfile -File scripts/Build-Tab5Network.ps1` (requires PlatformIO CLI; not yet Windows-tested). See `docs/SETUP_WINDOWS.md`.
+Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Inspect-Tab5.ps1` (review the script first; scoped to child process). Build without flashing: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Build-Tab5Network.ps1` (install Python PlatformIO module first; local Windows build pending). See `docs/SETUP_WINDOWS.md`.
+
+## Windows USB installation candidate
+A guarded script is committed as [scripts/Flash-Tab5Network.ps1](scripts/Flash-Tab5Network.ps1). The default mode **builds and checks only**. Explicit `-Upload` is required before it will ask for an additional typed confirmation to overwrite the old ESP32-P4 firmware. It validates two private 16 MB backups, the COM port, secure boot/encryption eFuses, selected ST7121 screen revision, and the firmware build before upload. See [FLASH_RECOVERY](docs/FLASH_RECOVERY.md). **It has not yet been executed on the user laptop or flashed the Tab5.** The original microSD remains inside and is not accessed by this preview, but a separate microSD backup has not been verified.
 
 ## Current milestone
 - [x] Existing GitHub repository identified.
@@ -51,7 +54,8 @@ Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass 
 - [x] Windows flash-ID completed: COM3 is ESP32-P4 rev v1.3 with 16 MB flash; esptool 5.6.0 installed; LCD revision remains unverified.
 - [ ] Confirm physical Tab5 screen-controller revision and COM3-to-Tab5 association, Wi-Fi coprocessor firmware and microSD behavior.
 - [ ] Execute `scripts/Backup-Tab5Flash.ps1` to create two matching private flash dumps, then independently back up microSD and verify recovery feasibility. Script committed; actual backups **pending**.
-- [ ] Build/flash touch UI prototype and validate every button.
+- [x] Firmware source compiled in GitHub CI; guarded USB flash PowerShell script committed.
+- [ ] Run real Windows preflight and guarded upload; confirm touchscreen UI and every button on the physical device.
 - [ ] Integrate and test each bounded network diagnostic on real hardware.
 - [ ] Save/reopen report on microSD; pass unattended crash and cancellation tests.
 - [ ] Tag a reproducible, hardware-tested release and document its SHA-256.

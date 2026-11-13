@@ -33,7 +33,7 @@ The feature branch `feature/touch-ui-preflight-v0` pins official M5Stack documen
 ## Physical inventory — fill at first laptop session
 | Measurement | Actual value |
 |---|---|
-| Rear sticker / LCD driver revision | NOT RECORDED — required before flashing |
+| Rear sticker / LCD driver revision | Sticker not recorded; **runtime logs 2026-11-11 identified board v3, LCD ST7121, touch ST712x**. Recheck physically if compatibility fails |
 | Windows PowerShell version | NOT RECORDED |
 | Connected COM port (if enumerated) | COM3 — ESP32-P4 v1.3, confirmed via esptool 5.6.0 on 2026-11-13 |
 | USB VID/PID | VID_303A / PID_1001 (no unique device ID stored) |

@@ -24,6 +24,10 @@ After PlatformIO is installed, run `scripts/Build-Tab5Network.ps1` from PowerShe
 ## Required scenarios
 | ID | Test | Expected observation |
 |---|---|---|
+| FL-00 | Windows preflight without -Upload | Two 16 MB private images match manifest; ESP32-P4/16MB and secure boot/encryption disabled; build passes; NO flash written |
+| FL-01 | Upload requires explicit flag and typed confirmation | Without -Upload or matching phrase, no firmware writes |
+| FL-02 | Wrong backup/hash, port, security fuse or branch | Fail closed, zero writes |
+| FL-03 | SD stays in Tab5 while flashing internal SPI | Script never formats/mounts SD; on-device SD state remains unverified |
 | UI-00 | Cold boot after flashing replacement | Six large on-screen buttons appear directly; no face/avatar, overlay or face-dismiss step. Verify on device, not in a mockup |
 | UI-01 | Tap every home button | Correct screen, no double-trigger |
 | UI-02 | Tap CANCEL mid-scan | No new probes scheduled; partial results preserved |

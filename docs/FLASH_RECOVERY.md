@@ -55,7 +55,20 @@ Only once there is a successful build and tested firmware artifact (the current 
 3. Build a **guarded** `scripts/Flash-Tab5Network.ps1` that refuses missing backups, unknown chip, mismatched hashes and ambiguous port.
 4. Flash through the explicitly selected USB port; collect serial log, check screen/touch and reboot. Never autoselect a port or erase flash as a convenience.
 
-**There is no flash script or approved candidate yet.**
+A guarded installation script now exists at [scripts/Flash-Tab5Network.ps1](../scripts/Flash-Tab5Network.ps1). Its default (without `-Upload`) is a read-only hardware preflight plus local firmware build, **not a firmware write**. The actual on-device installation and its recovery have not been tested.
+
+```powershell
+# From C:\Users\<username>\tab5network after pulling the feature branch:
+# First: no upload. Requires Python, esptool and PlatformIO.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Flash-Tab5Network.ps1 -Port COM3 -LcdRevision ST7121
+
+# Only after successful preflight and operator acceptance of replacement:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Flash-Tab5Network.ps1 -Port COM3 -LcdRevision ST7121 -Upload
+```
+
+The final command requires typing **FLASH COM3** to proceed. Before upload it validates both full-image 16 MB private hashes and the TNK1 manifest, read-only ESP32-P4 identity and security eFuses, a clean checked-out development branch and an ESP32-P4 build. It selects **ST7121** based on prior real startup logs, not an invented board revision. The flash will replace internal flash bootloader/partition/app regions; keep the private original image and review restore compatibility. The original 512 GB microSD remains installed per operator preference and is **not accessed by this source**, but a separate SD backup is not verified.
+
+**Safety:** If any check fails, stop. Never add `erase-flash`, `--force`, or silently bypass missing backups, boot security or the explicit confirmation prompt.
 
 ## Stage 5 — recovery
 If the new firmware will not boot or respond:
@@ -73,4 +86,4 @@ If the new firmware will not boot or respond:
 [ ] Independent SD copy and hash manifest created privately
 [ ] Restore plan tested or recovery limits explicitly accepted
 [ ] Build/test binaries fingerprinted
-[ ] Flash operation explicitly authorized
+[x] Operator requested to push the touchscreen firmware on 2026-11-13; final interactive confirmation and physical upload still pending

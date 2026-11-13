@@ -2,6 +2,14 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — Guarded Windows USB flashing workflow prepared (no device upload yet)
+- Committed `scripts/Flash-Tab5Network.ps1` for explicit COM-port flashing: default is fail-closed build/preflight; `-Upload` plus typed confirmation triggers PlatformIO USB upload. Do not invoke full-chip erase.
+- The script checks two independent 16MB firmware backup files and private TNK1 manifest SHA-256, ESP32-P4/16MB flash identity, and filters **only** `SECURE_BOOT_EN` and `SPI_BOOT_CRYPT_CNT` read-only eFuse values; refuses enabled/unreadable security features.
+- It takes the expected display-controller input `ST7121` from the user's **earlier real device runtime logs** (board version 3; LCD ST7121 and ST712x touch). The physical rear sticker remains uninspected; on-device LCD/touch success still needs testing.
+- The 512GB microSD remains inside the unit by operator preference. This first UI firmware has no application SD I/O, and PlatformIO programs ESP32-P4 internal flash rather than the SD. A separate SD backup is not verified and this residual risk remains visible.
+- Updated build-only script to call `python -m platformio` rather than relying on `pio.exe` being on the Windows PATH. Source-level CI and laptop execution are pending for this update.
+- No upload, erase, factory recovery, SD formatting or observed touchscreen run is claimed.
+
 ## 2026-11-13 — On-screen buttons replace the face; user reports backup verified
 - Product clarification: **no Pocket DM face/avatar, overlay or animated startup view**. The replacement firmware must boot straight to the six large on-screen diagnostic buttons, with Back returning to that same home screen. No additional physical button needed for navigation.
 - Existing source already initializes the Home dashboard. Added explicit boot contract comment and source regression checks for all six button-to-details-to-home transitions.
