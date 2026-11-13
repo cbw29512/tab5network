@@ -1,0 +1,36 @@
+# Machine-local secrets and private user/device information
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+private/
+backups/
+reports/
+scan-results/
+firmware-dumps/
+*.bin
+*.img
+*.uf2
+*.elf
+*.map
+*.hex
+
+# PlatformIO/build artifacts
+.pio/
+build/
+dist/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE/editor local state
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
