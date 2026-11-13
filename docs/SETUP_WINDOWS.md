@@ -1,6 +1,6 @@
 # Windows laptop setup (PowerShell) — operator handoff
 
-Current state: **documentation only; no verified one-command installer or firmware binaries exist yet**. The physical Tab5 is connected to the user's Windows laptop by a USB data cable. Commands here are for inspection; do **not** flash until the recovery gate in FLASH_RECOVERY passes.
+Current state: **read-only inspection script and firmware source exist on the feature branch**, but physical flash/build are unverified and there is no approved firmware binary. The physical Tab5 is connected to the user's Windows laptop by a USB data cable. Commands here are for inspection; do **not** flash until the recovery gate in FLASH_RECOVERY passes.
 
 ## 1. Clone the version-controlled project
 Open PowerShell:
@@ -19,6 +19,19 @@ try {
 Expected: an intact local clone at the repository's recorded commit. Do not continue if clone/authentication fails.
 
 ## 2. Identify the USB device (read-only)
+Use the script provided in the repository; it NEVER writes firmware or makes backups:
+
+```powershell
+try {
+    $ErrorActionPreference = 'Stop'
+    & powershell -NoProfile -File .\\scripts\\Inspect-Tab5.ps1
+    if ($LASTEXITCODE -ne 0) { throw 'Tab5 preflight failed' }
+} catch { Write-Error "Device inspection failed: $($_.Exception.Message)" }
+```
+
+The optional `-VerifyChip -Port COMx` performs an explicit **read-only** chip ID query only after you verify the actual COM port and put the device in ROM download mode. Do not use it to auto-select a device.
+
+Manual fallback:
 ```powershell
 try {
     $ErrorActionPreference = "Stop"
@@ -45,7 +58,7 @@ See [FLASH_RECOVERY.md](FLASH_RECOVERY.md). Copy the microSD separately, and tak
 ## 5. Build prerequisites (not yet installed or pinned)
 - Git for Windows and PowerShell.
 - Python and esptool for flash identification, backup and verification.
-- M5Stack-compatible ESP32-P4/ESP32-C6 toolchain (manufacturer supplies a PlatformIO/Arduino example; a locked, working version is pending verification).
+- `platformio.ini` pins pioarduino platform `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`; this source baseline must still pass the GitHub compile and physical LCD test before flashing.
 - USB serial driver if required by Device Manager.
 - SHA-256 hashing with `Get-FileHash`.
 
