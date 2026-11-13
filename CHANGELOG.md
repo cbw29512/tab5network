@@ -9,6 +9,7 @@ This is a **living, append-only record** of work, including features that are la
 - Touch fix `8981e61`: evaluate `wasClicked()` without a `getCount() > 0` guard so release events are not discarded after the finger lifts (per M5Stack API example).
 - Added the read-only `scripts/Inspect-Tab5.ps1` to discover USB ports/tools and optionally run an operator-initiated ESP32-P4 chip ID read. No flash writes.
 - Commit `1c3f1de`: added `scripts/Build-Tab5Network.ps1` for a PowerShell-only build; hashes the binary and never uploads. Windows execution unverified.
+- Commit `dcba4ec`: GitHub Actions adds a Windows PowerShell parser check, so syntax can be validated without touching a device. First run pending.
 - Selected documented source tags: pioarduino 54.03.21, M5Unified 0.2.23, M5GFX 0.2.30. Build results and LCD revision are not yet certified at this entry.
 - Schema/state change: first in-code `State {screen, selected, outcome, authorized_scope, generation}` with fail-closed host test authorization; no saved network targets or secrets.
 - Tests: committed C++ host tests and GitHub compile configuration; **results pending**. No physical Tab5 testing performed.
