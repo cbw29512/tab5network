@@ -49,7 +49,7 @@ Record actual size, SHA-256, flash-ID output and tool version in a **private** b
 4. Develop initially with another microSD card where possible.
 
 ## Stage 4 — approve a specific candidate for flashing
-Only once there is a successful build and tested firmware artifact:
+Only once there is a successful build and tested firmware artifact (the current `scripts/Build-Tab5Network.ps1` is **build-only and never uploads**):
 1. Identify exact source commit, toolchain, M5Unified/M5GFX revision, LCD hardware driver and binary hash.
 2. Verify image compatibility, partition/flash layout, known working recovery path, and signed-off acceptance of replacing the current firmware.
 3. Build a **guarded** `scripts/Flash-Tab5Network.ps1` that refuses missing backups, unknown chip, mismatched hashes and ambiguous port.
