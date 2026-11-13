@@ -6,6 +6,13 @@
 - **microSD**: optional report archive; absence must not block ordinary on-screen testing.
 - **Windows development laptop**: build, serial monitor, backup, guarded USB flashing. Laptop is **not** a runtime dependency.
 
+## First committed state implementation (source preview)
+- `include/app_state.hpp` provides `Screen`, `Tool`, `Outcome`, `State`, and a `Controller` with generation invalidation, explicit `ScopeRequired`, and `Unsupported` results.
+- `include/touch_layout.hpp` supplies a pure six-button geometry map used for both drawing and hit testing.
+- `src/screens.cpp` paints and reads M5Unified touch; no network API is imported in the first build.
+- No UI control can authorize a host target at this stage; later approval must be tied to a specific owned host/subnet rather than a global boolean.
+- The entire v1 report and network profile schema below remains **proposed and not yet stored on a device**.
+
 ## Data schema, version 1 (proposal; not yet coded)
 - `DeviceSettings { schema_version, display_brightness, selected_profile_id?, enabled_tests[], report_retention_count }`
 - `NetworkProfile { profile_id, label, approved_ipv4_cidr?, approved_host_ips[], consent_timestamp?, enabled, max_hosts, max_concurrent_probes, timeout_ms }`
