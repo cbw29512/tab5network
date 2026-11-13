@@ -29,6 +29,9 @@ The authoritative, version-controlled source and documentation for **Tab5 Networ
 ## Working rules
 Do not delete documentation of removed features: mark as superseded in docs/DECISIONS.md and add a removal entry in CHANGELOG.md. Do not promote a feature from planned to working without physical proof where applicable. Keep source files modular (target under 150 lines) and split files that grow beyond that threshold.
 
+## First USB installation (not yet hardware-tested)
+Use the repository's `scripts/Flash-Tab5Network.ps1` with explicit port and prior verified LCD ST7121. The script defaults to preflight/build and requires `-Upload` plus typed confirmation for any flash write. Backups stay private, and the microSD stays installed per operator preference. See `docs/FLASH_RECOVERY.md` and record the real results in PROJECT_STATE.md. Do not claim this is a functioning scanner until physical touch and network adapters are tested.
+
 ## Release bundle to deliver once ready
 A tagged GitHub source revision; pinned toolchain/dependencies; verified binary plus SHA-256; Windows build and flash scripts; sample sanitized report; supported-hardware matrix; known limitations; backup and restore guide; proof of physical acceptance tests.
 

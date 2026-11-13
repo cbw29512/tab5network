@@ -2,6 +2,18 @@
 
 **Never substitute mocked results for real network diagnostics on hardware.** Sample data may be used in a UI mockup only if labeled clearly.
 
+## Initial source-test coverage added (not a device pass)
+`tests/controller_test.cpp` checks fail-closed default state, scope gating, unsupported backends, invalid selections, generation counter and touch hitboxes at 1280x720. `.github/workflows/firmware-source.yml` compiles with host g++ and attempts a pinned PlatformIO ESP32-P4 firmware compile. Source CI **passed** on run 43451215326 at head `337995f` (host C++ tests, Windows PowerShell script syntax, PlatformIO ESP32-P4 compile). This does **not** prove screen, radio or USB behavior.
+
+## Read-only flash backup validation gate (still pending on actual hardware)
+- 2026-11-13: ESP32-P4 identification succeeded on COM3 with esptool 5.6.0 (chip v1.3 / 16 MB).
+- `scripts/Backup-Tab5Flash.ps1` must refuse wrong ports, unexpected chip size and backup paths inside the repo; should perform two independent `read-flash 0 ALL` operations, verify **16,777,216 bytes each**, compare SHA-256 and leave old Pocket DM flash unchanged.
+- A passing script run is only a **read consistency check**, not proof that raw flash is restorable under secure boot/flash encryption. Record restoration security limitations and back up microSD independently.
+- A second verified physical run and private manifest are pending. CI syntax validation is required but does not prove actual flash reads.
+
+## Windows reproducible build gate
+After PlatformIO is installed, run `scripts/Build-Tab5Network.ps1` from PowerShell. Capture success/failure, Git SHA, output firmware size and SHA-256 without uploading. **Do not flash before backup gates.** The command is committed but has not been run on the user's Windows laptop.
+
 ## Test tiers
 - **T0 source checks:** schema parsing, pure state transitions, error logging, input validation, report serialization, cancellation, bounded target enumeration. Run offline on a developer laptop.
 - **T1 host simulation:** fake Wi-Fi/ICMP/TCP/DNS adapters produce success, timeout, partial, unsupported, SD missing/full and cancellation. No packet transmission.
@@ -12,6 +24,11 @@
 ## Required scenarios
 | ID | Test | Expected observation |
 |---|---|---|
+| FL-00 | Windows preflight without -Upload | Two 16 MB private images match manifest; ESP32-P4/16MB and secure boot/encryption disabled; build passes; NO flash written |
+| FL-01 | Upload requires explicit flag and typed confirmation | Without -Upload or matching phrase, no firmware writes |
+| FL-02 | Wrong backup/hash, port, security fuse or branch | Fail closed, zero writes |
+| FL-03 | SD stays in Tab5 while flashing internal SPI | Script never formats/mounts SD; on-device SD state remains unverified |
+| UI-00 | Cold boot after flashing replacement | Six large on-screen buttons appear directly; no face/avatar, overlay or face-dismiss step. Verify on device, not in a mockup |
 | UI-01 | Tap every home button | Correct screen, no double-trigger |
 | UI-02 | Tap CANCEL mid-scan | No new probes scheduled; partial results preserved |
 | UI-03 | Disconnect Wi-Fi during run | Clear error; return home; no stale result |

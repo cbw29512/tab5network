@@ -27,14 +27,17 @@ The built-in ESP32-C6 is a **2.4 GHz** radio; it cannot scan 5 GHz access points
 - esptool: https://docs.espressif.com/projects/esptool/en/latest/esp32p4/
 - PIO Arduino platform example is included in M5Stack docs. Its branch and library versions are **unverified for this device**; do not freeze toolchain versions based on a guess.
 
+## First toolchain source baseline
+The feature branch `feature/touch-ui-preflight-v0` pins official M5Stack documented PlatformIO baseline `54.03.21` and minimum compatible M5Unified `0.2.23` / M5GFX `0.2.30`. The Git refs were verified to exist; actual PlatformIO compile and local Windows USB flashing have **not yet been verified**.
+
 ## Physical inventory — fill at first laptop session
 | Measurement | Actual value |
 |---|---|
-| Rear sticker / LCD driver revision | NOT RECORDED |
+| Rear sticker / LCD driver revision | Sticker not recorded; **runtime logs 2026-11-11 identified board v3, LCD ST7121, touch ST712x**. Recheck physically if compatibility fails |
 | Windows PowerShell version | NOT RECORDED |
-| Connected COM port (if enumerated) | NOT RECORDED |
-| USB VID/PID | NOT RECORDED |
-| Existing firmware / partition layout | NOT RECORDED |
+| Connected COM port (if enumerated) | COM3 — ESP32-P4 v1.3, confirmed via esptool 5.6.0 on 2026-11-13 |
+| USB VID/PID | VID_303A / PID_1001 (no unique device ID stored) |
+| Existing firmware / partition layout | Detected SPI flash 16 MB (manufacturer 0x46, device 0x4018); existing partition map/protection unknown |
 | Existing flash backup SHA-256 | NOT RECORDED |
 | microSD backup directory and hash manifest | NOT RECORDED |
 | Verified toolchain and library commits | NOT RECORDED |

@@ -20,7 +20,7 @@ M5Stack: with a USB cable/battery connected, press and hold the Reset/Power cont
 ## Stage 2 — read and back up flash
 Espressif documents reading flash with `read-flash 0 ALL`, which automatically uses the detected flash size when supported. Official instructions: https://docs.espressif.com/projects/esptool/en/latest/esp32p4/esptool/basic-commands.html
 
-**Operator-controlled example — NOT TESTED on this user's device.** Replace COMx with the **verified** port. Keep output somewhere private, not in the repository:
+**Operator-controlled example — original manual fallback.** COM3 was chip-confirmed as ESP32-P4 v1.3/16 MB on 2026-11-13. Prefer the guarded, committed `scripts/Backup-Tab5Flash.ps1` after its CI syntax gate passes: it performs **two independent full flash reads** and compares byte counts and SHA-256 hashes, refusing an unexpected chip/flash size. It stores the backup under `%USERPROFILE%\\Tab5PrivateBackups` by default, *not* inside the public repository. The actual backup has **not yet been performed**. Manual fallback (not yet exercised on hardware):
 ```powershell
 try {
     $ErrorActionPreference = "Stop"
@@ -40,7 +40,7 @@ try {
     Write-Error "STOP: Tab5 flash backup was not verified: $($_.Exception.Message)"
 }
 ```
-Record actual size, SHA-256, flash-ID output and tool version in a **private** backup manifest. Ideally perform a second read and compare hashes. A hash and successful read alone do not demonstrate restoration: retain restore documentation and confirm the firmware format/security state.
+Record actual size, SHA-256, flash-ID output and tool version in a **private** backup manifest. The guarded script performs a second read and compares hashes. A hash and successful read alone do not demonstrate restoration: retain restore documentation and confirm the firmware format/security state.
 
 ## Stage 3 — protect microSD contents
 1. Shut down the Tab5 properly, remove microSD, and copy **all files** to a private directory on the laptop or external storage.
@@ -49,13 +49,26 @@ Record actual size, SHA-256, flash-ID output and tool version in a **private** b
 4. Develop initially with another microSD card where possible.
 
 ## Stage 4 — approve a specific candidate for flashing
-Only once there is a successful build and tested firmware artifact:
+Only once there is a successful build and tested firmware artifact (the current `scripts/Build-Tab5Network.ps1` is **build-only and never uploads**):
 1. Identify exact source commit, toolchain, M5Unified/M5GFX revision, LCD hardware driver and binary hash.
 2. Verify image compatibility, partition/flash layout, known working recovery path, and signed-off acceptance of replacing the current firmware.
 3. Build a **guarded** `scripts/Flash-Tab5Network.ps1` that refuses missing backups, unknown chip, mismatched hashes and ambiguous port.
 4. Flash through the explicitly selected USB port; collect serial log, check screen/touch and reboot. Never autoselect a port or erase flash as a convenience.
 
-**There is no flash script or approved candidate yet.**
+A guarded installation script now exists at [scripts/Flash-Tab5Network.ps1](../scripts/Flash-Tab5Network.ps1). Its default (without `-Upload`) is a read-only hardware preflight plus local firmware build, **not a firmware write**. The actual on-device installation and its recovery have not been tested.
+
+```powershell
+# From C:\Users\<username>\tab5network after pulling the feature branch:
+# First: no upload. Requires Python, esptool and PlatformIO.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Flash-Tab5Network.ps1 -Port COM3 -LcdRevision ST7121
+
+# Only after successful preflight and operator acceptance of replacement:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Flash-Tab5Network.ps1 -Port COM3 -LcdRevision ST7121 -Upload
+```
+
+The final command requires typing **FLASH COM3** to proceed. Before upload it validates both full-image 16 MB private hashes and the TNK1 manifest, read-only ESP32-P4 identity and security eFuses, a clean checked-out development branch and an ESP32-P4 build. It selects **ST7121** based on prior real startup logs, not an invented board revision. The flash will replace internal flash bootloader/partition/app regions; keep the private original image and review restore compatibility. The original 512 GB microSD remains installed per operator preference and is **not accessed by this source**, but a separate SD backup is not verified.
+
+**Safety:** If any check fails, stop. Never add `erase-flash`, `--force`, or silently bypass missing backups, boot security or the explicit confirmation prompt.
 
 ## Stage 5 — recovery
 If the new firmware will not boot or respond:
@@ -68,9 +81,9 @@ If the new firmware will not boot or respond:
 ## Proof to record in PROJECT_STATE.md before first flash
 [ ] USB COM port and hardware ID confirmed
 [ ] LCD controller revision confirmed
-[ ] Flash ID/size recorded
+[x] Flash ID/size recorded — ESP32-P4 v1.3, 16 MB, esptool 5.6.0 (2026-11-13)
 [ ] Full flash dump created and hashed privately
 [ ] Independent SD copy and hash manifest created privately
 [ ] Restore plan tested or recovery limits explicitly accepted
 [ ] Build/test binaries fingerprinted
-[ ] Flash operation explicitly authorized
+[x] Operator requested to push the touchscreen firmware on 2026-11-13; final interactive confirmation and physical upload still pending

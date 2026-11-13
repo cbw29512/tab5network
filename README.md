@@ -1,7 +1,7 @@
 # Tab5 Network Tester
 **Working name:** Pocket Kali / Tab5 Network Test Lab  
 **Target:** M5Stack Tab5 (ESP32-P4 + ESP32-C6), controlled from a Windows laptop over USB-C  
-**Status:** DOCUMENTATION BASELINE — firmware is **not yet built, installed, or hardware-certified**.  
+**Status:** SOURCE PREVIEW — touch UI firmware is committed on a feature branch; its **CI compile passed**, but it has not been installed or hardware-certified.  
 **Repository visibility:** PUBLIC. Never commit network secrets, private scan data, firmware dumps, or personal information.
 
 A touch-first, portable, **authorized** network diagnostic instrument. All on-device tests are selected by large buttons, show visual progress/results, and can export reports to microSD. No command line is required on the Tab5. PowerShell on the Windows development laptop handles setup, build, backup and flashing.
@@ -30,13 +30,32 @@ A touch-first, portable, **authorized** network diagnostic instrument. All on-de
 
 **Operating rule:** standalone basic tests first; NucBox integration or advanced tools may be added later, but are not prerequisites for the MVP. Never run unbounded scans, deauthentication, exploits, or covert collection.
 
+## Startup UI contract
+The old Pocket DM face/avatar is **not part of this project**. On boot, the replacement firmware must open the full-screen six-button diagnostic dashboard immediately. Buttons are drawn on and operated through the Tab5 touchscreen, not through a face overlay, animated avatar or physical-button menu. This is already the design of the committed source, but **the existing Tab5 still shows its previous firmware until a safe flash is completed**. Do not treat this behavior as hardware-tested until the on-device acceptance case UI-00 passes.
+
+## First firmware source preview
+Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens.cpp`, backed by pure C++ state and touch-hitbox logic in `include/` and `src/` with `tests/controller_test.cpp`.
+
+**Important:** the six buttons are functional UI navigation only. Wi-Fi scanning and host testing are NOT implemented. Wi-Fi reports `TEST BACKEND NOT INSTALLED`; host tests report `AUTHORIZED TARGET REQUIRED`. The preview does not send probes and must not be mistaken for a completed tester. Code builds and real-device tests must pass before flashing.
+
+The pinned `platformio.ini` uses pioarduino `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`, matching the M5Stack minimum for recent display revisions. GitHub firmware compile runs in `.github/workflows/firmware-source.yml`.
+
+Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Inspect-Tab5.ps1` (review the script first; scoped to child process). Build without flashing: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Build-Tab5Network.ps1` (install Python PlatformIO module first; local Windows build pending). See `docs/SETUP_WINDOWS.md`.
+
+## Windows USB installation candidate
+A guarded script is committed as [scripts/Flash-Tab5Network.ps1](scripts/Flash-Tab5Network.ps1). The default mode **builds and checks only**. Explicit `-Upload` is required before it will ask for an additional typed confirmation to overwrite the old ESP32-P4 firmware. It validates two private 16 MB backups, the COM port, secure boot/encryption eFuses, selected ST7121 screen revision, and the firmware build before upload. See [FLASH_RECOVERY](docs/FLASH_RECOVERY.md). **It has not yet been executed on the user laptop or flashed the Tab5.** The original microSD remains inside and is not accessed by this preview, but a separate microSD backup has not been verified.
+
 ## Current milestone
 - [x] Existing GitHub repository identified.
 - [x] Project scope, documentation and data/state contracts committed.
 - [x] Living-document GitHub Actions check passed ([run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566)); future code pull requests must update state and changelog.
-- [ ] Confirm physical Tab5 screen-controller revision, USB COM port, Wi-Fi coprocessor firmware and microSD behavior.
-- [ ] Establish and verify a restorable backup of the current firmware and SD contents.
-- [ ] Build/flash touch UI prototype and validate every button.
+- [x] Initial source-level touch navigation implementation committed (not device-tested).
+- [x] GitHub C++ tests, Windows PowerShell parse, and PlatformIO compile passed ([run 43451215326](https://github.com/cbw29512/tab5network/actions/runs/43451215326)).
+- [x] Windows flash-ID completed: COM3 is ESP32-P4 rev v1.3 with 16 MB flash; esptool 5.6.0 installed; LCD revision remains unverified.
+- [ ] Confirm physical Tab5 screen-controller revision and COM3-to-Tab5 association, Wi-Fi coprocessor firmware and microSD behavior.
+- [ ] Execute `scripts/Backup-Tab5Flash.ps1` to create two matching private flash dumps, then independently back up microSD and verify recovery feasibility. Script committed; actual backups **pending**.
+- [x] Firmware source compiled in GitHub CI; guarded USB flash PowerShell script committed.
+- [ ] Run real Windows preflight and guarded upload; confirm touchscreen UI and every button on the physical device.
 - [ ] Integrate and test each bounded network diagnostic on real hardware.
 - [ ] Save/reopen report on microSD; pass unattended crash and cancellation tests.
 - [ ] Tag a reproducible, hardware-tested release and document its SHA-256.
