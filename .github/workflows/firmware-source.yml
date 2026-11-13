@@ -6,7 +6,7 @@ on:
       - "include/**"
       - "tests/**"
       - "platformio.ini"
-      - "scripts/Inspect-Tab5.ps1"
+      - "scripts/*.ps1"
       - ".github/workflows/firmware-source.yml"
   pull_request:
     paths:
@@ -14,7 +14,7 @@ on:
       - "include/**"
       - "tests/**"
       - "platformio.ini"
-      - "scripts/Inspect-Tab5.ps1"
+      - "scripts/*.ps1"
       - ".github/workflows/firmware-source.yml"
 permissions:
   contents: read
@@ -41,3 +41,21 @@ jobs:
         run: python -m pip install platformio==6.1.18
       - name: Compile ESP32-P4 firmware (no upload)
         run: python -m platformio run -e tab5
+  powershell-syntax:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse PowerShell scripts without executing device commands
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Get-ChildItem scripts -Filter '*.ps1' | ForEach-Object {
+            $tokens = $null
+            $parseErrors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              $_.FullName, [ref]$tokens, [ref]$parseErrors)
+            if ($parseErrors.Count -gt 0) {
+              throw "PowerShell syntax error in $($_.Name): $($parseErrors[0].Message)"
+            }
+            Write-Host "Parsed $($_.Name)"
+          }
