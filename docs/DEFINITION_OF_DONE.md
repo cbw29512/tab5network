@@ -17,7 +17,7 @@ A portable, touch-only network diagnostic instrument for networks the operator o
 ## Acceptance gates (all required for MVP release)
 | ID | Verification | Status |
 |---|---|---|
-| A0 | GitHub source, docs, decisions, change log, reproducible instructions | Documentation baseline in progress |
+| A0 | GitHub source, docs, decisions, change log, reproducible instructions | Documentation committed; full reproducible build pending |
 | A1 | Confirm board revision, boot/download procedure, Windows USB port and toolchain | Pending physical test |
 | A2 | Backup ESP32-P4 flash, copy microSD content, SHA-256 and prove restoration method | Pending physical test |
 | A3 | Full touchscreen UI, button navigation and cancellation | Not implemented |
