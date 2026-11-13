@@ -2,6 +2,17 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — First touchscreen firmware source (unreleased)
+- Commit: `63dbda1` on `feature/touch-ui-preflight-v0`; proposed PR pending.
+- Added six large Tab5 touch hitboxes and actual UI navigation on M5Unified with honest unimplemented/scope-required result pages; **no network probes or fabricated measurements**.
+- Added isolated pure C++ `Controller` and geometry logic, desktop C++ test executable, and GitHub Actions host plus PlatformIO compile jobs.
+- Added the read-only `scripts/Inspect-Tab5.ps1` to discover USB ports/tools and optionally run an operator-initiated ESP32-P4 chip ID read. No flash writes.
+- Selected documented source tags: pioarduino 54.03.21, M5Unified 0.2.23, M5GFX 0.2.30. Build results and LCD revision are not yet certified at this entry.
+- Schema/state change: first in-code `State {screen, selected, outcome, authorized_scope, generation}` with fail-closed host test authorization; no saved network targets or secrets.
+- Tests: committed C++ host tests and GitHub compile configuration; **results pending**. No physical Tab5 testing performed.
+- Next blocker: inspect GitHub compile, verify connected Windows Tab5 COM/LCD/flash, create private backups before any flash.
+- Release: none, previous firmware and SD untouched.
+
 ## 2026-11-13 — Project baseline
 - Established separate repository `cbw29512/tab5network` (public).
 - Selected MVP: visual, push-button Wi-Fi Scan, Devices, Ping, Port Test, DNS, Run All.
