@@ -2,6 +2,14 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — Windows hardware preflight and log privacy repair
+- Operator cloned the repository and checked out `feature/touch-ui-preflight-v0` on Windows. Initial inspection was blocked by Windows PowerShell's script policy; executing the reviewed script in a separate child process using `-ExecutionPolicy Bypass` succeeded, without changing permanent policy.
+- Observed PowerShell 5.1, Git installed, Python 3.12 installed; `pio` not on PATH. A single serial device appeared on COM3 with Espressif VID/PID 303A/1001; no proof yet that this is the Tab5 until physical disconnect/reconnect or read-only `flash-id` confirmation.
+- Source change: default USB output now omits the unique PNP device-instance suffix. The earlier raw inspection had exposed a device-instance string in chat; that unique identifier is **not** copied into the public repository.
+- Setup documentation now describes process-scoped execution policy invocation, privacy rules and the next read-only hardware gate.
+- Tests: operator successfully executed the original preflight locally; redaction change is not yet verified on the physical laptop. CI checks pending for this commit. No USB flash, backup, network probe or firmware overwrite.
+- Next: confirm COM3 association and ESP32-P4 flash ID, inspect LCD sticker, preserve existing firmware and SD.
+
 ## 2026-11-13 — First touchscreen firmware source (unreleased)
 - Commit: `63dbda1` on `feature/touch-ui-preflight-v0`; proposed PR pending.
 - Added six large Tab5 touch hitboxes and actual UI navigation on M5Unified with honest unimplemented/scope-required result pages; **no network probes or fabricated measurements**.

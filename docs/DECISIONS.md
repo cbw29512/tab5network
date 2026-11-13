@@ -48,6 +48,14 @@ Use a new numbered entry when any existing decision is amended. Keep the old ent
 - Impact: Pure state controller and hitbox geometry can be host-tested. Only a verified build and backed-up Tab5 can be flashed.
 - Follow-up: compile verification, hardware touch acceptance, then explicit user-selected scope and genuine Wi-Fi adapter.
 
+## ADR-008 — Use a process-scoped PowerShell exception and redact serial identifiers
+- Date: 2026-11-13
+- Status: **accepted**
+- Context: The first actual Windows preflight was blocked by a default execution policy; the retry with a child `powershell.exe -NoProfile -ExecutionPolicy Bypass` succeeded. The original inspector printed a unique Windows PNP instance ID.
+- Decision: For reviewed local scripts, document a process-scoped bypass only; do not change global or permanent machine policy. By default print COM port and public VID/PID without device-instance suffixes.
+- Verification: User's first inspection succeeded; new redaction code requires a repeat/local verification. No platform policy change is required; managed Group Policy may still block execution.
+- Scope: This is development-tool convenience and output privacy, not permission to install unreviewed scripts.
+
 ## Decision template
 ```markdown
 ## ADR-NNN — Title

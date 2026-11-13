@@ -24,12 +24,20 @@ Use the script provided in the repository; it NEVER writes firmware or makes bac
 ```powershell
 try {
     $ErrorActionPreference = 'Stop'
-    & powershell -NoProfile -File .\\scripts\\Inspect-Tab5.ps1
+    # The checked-in script is inspected and read-only. This overrides execution
+    # policy only in the launched PowerShell process, not machine/user settings.
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\Inspect-Tab5.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Tab5 preflight failed' }
 } catch { Write-Error "Device inspection failed: $($_.Exception.Message)" }
 ```
 
+**Observed laptop checkpoint (2026-11-13):** PowerShell 5.1, Python 3.12 and Git were detected. The only enumerated USB COM device was **COM3** with Espressif `VID_303A&PID_1001`; device identity is not yet chip-confirmed. PlatformIO (`pio`) was not on PATH. The first invocation failed because Windows script execution was disabled; a *child-process* `-ExecutionPolicy Bypass` retry succeeded without changing the permanent policy. Some managed machines may enforce Group Policy and still refuse, in which case do not change policy globally; use the manual CIM inspection fallback.
+
+The inspector now redacts device-instance suffixes so routine diagnostic output is safe to share. The **full unique Windows PNPDeviceID must never be put into public GitHub history**.
+
 The optional `-VerifyChip -Port COMx` performs an explicit **read-only** chip ID query only after you verify the actual COM port and put the device in ROM download mode. Do not use it to auto-select a device.
+
+Before using the optional chip probe, confirm that COM3 disappears when the **Tab5** is unplugged and reappears when reconnected, or verify its identity in Device Manager. The port might change during ROM download. Then install/check `esptool` and run `flash-id` in a later step. No flash/erase command is part of this inspection.
 
 Manual fallback:
 ```powershell
@@ -67,7 +75,7 @@ The checked-in **build-only** script `scripts/Build-Tab5Network.ps1` runs `pio r
 ```powershell
 try {
     $ErrorActionPreference = 'Stop'
-    & .\\scripts\\Build-Tab5Network.ps1
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\Build-Tab5Network.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
 } catch { Write-Error "Tab5 build error: $($_.Exception.Message)" }
 ```

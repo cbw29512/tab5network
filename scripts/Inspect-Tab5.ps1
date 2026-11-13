@@ -8,6 +8,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 try {
     Write-Host "Tab5 Network Tester - Windows read-only preflight"
+    Write-Host "Privacy: only USB vendor/product IDs are shown, not device-instance serials."
     Write-Host "PowerShell: $($PSVersionTable.PSVersion)"
     foreach ($command in @("git", "python", "pio")) {
         $found = Get-Command $command -ErrorAction SilentlyContinue
@@ -19,7 +20,14 @@ try {
     }
     $ports = @(Get-CimInstance Win32_PnPEntity |
         Where-Object { $_.Name -match '\(COM\d+\)' } |
-        Select-Object Name, PNPDeviceID)
+        Select-Object Name, @{ Name = "USB_VID_PID"; Expression = {
+            # Device-instance suffixes can be unique IDs; do not print them.
+            if ($_.PNPDeviceID -match '(VID_[0-9A-Fa-f]{4}&PID_[0-9A-Fa-f]{4})') {
+                $Matches[1].ToUpperInvariant()
+            } else {
+                "Not available"
+            }
+        }})
     if ($ports.Count -eq 0) {
         Write-Warning "No COM devices found. Verify USB data cable and download mode."
     } else {

@@ -37,7 +37,7 @@ Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens
 
 The pinned `platformio.ini` uses pioarduino `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`, matching the M5Stack minimum for recent display revisions. GitHub firmware compile runs in `.github/workflows/firmware-source.yml`.
 
-Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.ps1`. Build without flashing: `powershell -NoProfile -File scripts/Build-Tab5Network.ps1` (requires PlatformIO CLI; not yet Windows-tested). See `docs/SETUP_WINDOWS.md`.
+Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Inspect-Tab5.ps1` (review the script first; scoped to child process). Build without flashing: `powershell -NoProfile -File scripts/Build-Tab5Network.ps1` (requires PlatformIO CLI; not yet Windows-tested). See `docs/SETUP_WINDOWS.md`.
 
 ## Current milestone
 - [x] Existing GitHub repository identified.
@@ -45,7 +45,8 @@ Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.p
 - [x] Living-document GitHub Actions check passed ([run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566)); future code pull requests must update state and changelog.
 - [x] Initial source-level touch navigation implementation committed (not device-tested).
 - [x] GitHub C++ tests, Windows PowerShell parse, and PlatformIO compile passed ([run 43451215326](https://github.com/cbw29512/tab5network/actions/runs/43451215326)).
-- [ ] Confirm physical Tab5 screen-controller revision, USB COM port, Wi-Fi coprocessor firmware and microSD behavior.
+- [x] First Windows read-only inspection succeeded: COM3 Espressif VID/PID reported; Python 3.12 and Git present; PlatformIO not on PATH. Device-chip identity/LCD revision not yet verified.
+- [ ] Confirm physical Tab5 screen-controller revision and COM3-to-Tab5 association, Wi-Fi coprocessor firmware and microSD behavior.
 - [ ] Establish and verify a restorable backup of the current firmware and SD contents.
 - [ ] Build/flash touch UI prototype and validate every button.
 - [ ] Integrate and test each bounded network diagnostic on real hardware.
