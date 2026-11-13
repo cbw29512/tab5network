@@ -7,7 +7,10 @@ This is a **living, append-only record** of work, including features that are la
 - Selected MVP: visual, push-button Wi-Fi Scan, Devices, Ping, Port Test, DNS, Run All.
 - Defined requirement for a Windows PowerShell laptop workflow over USB-C, with backup and safe restore of the previous Pocket DM firmware and SD card.
 - Added initial requirements, architecture/data schema/state-machine design, hardware notes, Windows inspection procedure, recovery plan, tests, handoff policy and scope/security guide.
-- **Verification level:** GitHub file commits only; no physical build or flash was performed.
+- Added docs/DECISIONS.md for decisions, reversals and feature removals; PROJECT_STATE.md for verified current status; CONTRIBUTING.md for the update policy.
+- Added automated documentation integrity and source-change gate (scripts/check_docs.py; .github/workflows/documentation.yml).
+- **Verified:** [Documentation CI run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566) passed on commit b288277; this validates files and local links, not real device operation.
+- **Verification level:** GitHub file commits and documentation CI only; no firmware build, physical test or flash performed.
 - **Open blockers:** exact board LCD driver, USB device identification, flash backup, SD backup, build toolchain verification, firmware prototype, network tests.
 - **Release status:** no tag / no working release.
 
