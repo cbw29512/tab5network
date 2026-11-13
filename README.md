@@ -37,7 +37,7 @@ Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens
 
 The pinned `platformio.ini` uses pioarduino `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`, matching the M5Stack minimum for recent display revisions. GitHub firmware compile runs in `.github/workflows/firmware-source.yml`.
 
-Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.ps1`. See `docs/SETUP_WINDOWS.md`.
+Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.ps1`. Build without flashing: `powershell -NoProfile -File scripts/Build-Tab5Network.ps1` (requires PlatformIO CLI; not yet Windows-tested). See `docs/SETUP_WINDOWS.md`.
 
 ## Current milestone
 - [x] Existing GitHub repository identified.
