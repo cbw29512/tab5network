@@ -1,0 +1,43 @@
+name: Touch firmware source and build
+on:
+  push:
+    paths:
+      - "src/**"
+      - "include/**"
+      - "tests/**"
+      - "platformio.ini"
+      - "scripts/Inspect-Tab5.ps1"
+      - ".github/workflows/firmware-source.yml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "include/**"
+      - "tests/**"
+      - "platformio.ini"
+      - "scripts/Inspect-Tab5.ps1"
+      - ".github/workflows/firmware-source.yml"
+permissions:
+  contents: read
+jobs:
+  core-state:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run pure C++ controller tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Iinclude \
+            src/app_state.cpp src/touch_layout.cpp tests/controller_test.cpp \
+            -o /tmp/tab5-core-tests
+          /tmp/tab5-core-tests
+  pio-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned PlatformIO CLI
+        run: python -m pip install platformio==6.1.18
+      - name: Compile ESP32-P4 firmware (no upload)
+        run: python -m platformio run -e tab5
