@@ -1,7 +1,7 @@
 # Tab5 Network Tester
 **Working name:** Pocket Kali / Tab5 Network Test Lab  
 **Target:** M5Stack Tab5 (ESP32-P4 + ESP32-C6), controlled from a Windows laptop over USB-C  
-**Status:** SOURCE PREVIEW — touch UI firmware is committed on a feature branch; it is **not yet proven to build, installed, or hardware-certified**.  
+**Status:** SOURCE PREVIEW — touch UI firmware is committed on a feature branch; its **CI compile passed**, but it has not been installed or hardware-certified.  
 **Repository visibility:** PUBLIC. Never commit network secrets, private scan data, firmware dumps, or personal information.
 
 A touch-first, portable, **authorized** network diagnostic instrument. All on-device tests are selected by large buttons, show visual progress/results, and can export reports to microSD. No command line is required on the Tab5. PowerShell on the Windows development laptop handles setup, build, backup and flashing.
@@ -44,7 +44,7 @@ Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.p
 - [x] Project scope, documentation and data/state contracts committed.
 - [x] Living-document GitHub Actions check passed ([run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566)); future code pull requests must update state and changelog.
 - [x] Initial source-level touch navigation implementation committed (not device-tested).
-- [ ] Confirm GitHub C++ and PlatformIO compile gates on the feature branch.
+- [x] GitHub C++ tests, Windows PowerShell parse, and PlatformIO compile passed ([run 43451215326](https://github.com/cbw29512/tab5network/actions/runs/43451215326)).
 - [ ] Confirm physical Tab5 screen-controller revision, USB COM port, Wi-Fi coprocessor firmware and microSD behavior.
 - [ ] Establish and verify a restorable backup of the current firmware and SD contents.
 - [ ] Build/flash touch UI prototype and validate every button.

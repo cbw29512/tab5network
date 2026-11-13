@@ -12,7 +12,7 @@ This is a **living, append-only record** of work, including features that are la
 - Commit `dcba4ec`: GitHub Actions adds a Windows PowerShell parser check, so syntax can be validated without touching a device. First run pending.
 - Selected documented source tags: pioarduino 54.03.21, M5Unified 0.2.23, M5GFX 0.2.30. Build results and LCD revision are not yet certified at this entry.
 - Schema/state change: first in-code `State {screen, selected, outcome, authorized_scope, generation}` with fail-closed host test authorization; no saved network targets or secrets.
-- Tests: committed C++ host tests and GitHub compile configuration; **results pending**. No physical Tab5 testing performed.
+- **Verified:** [GitHub Actions run 43451215326](https://github.com/cbw29512/tab5network/actions/runs/43451215326) passed all three jobs on source head `337995f` (C++ controller, Windows PowerShell parser, ESP32-P4 PlatformIO compile). [Documentation run 43451215856](https://github.com/cbw29512/tab5network/actions/runs/43451215856) also passed. No physical Tab5 testing performed.
 - Next blocker: inspect GitHub compile, verify connected Windows Tab5 COM/LCD/flash, create private backups before any flash.
 - Release: none, previous firmware and SD untouched.
 

@@ -3,7 +3,7 @@
 **Never substitute mocked results for real network diagnostics on hardware.** Sample data may be used in a UI mockup only if labeled clearly.
 
 ## Initial source-test coverage added (not a device pass)
-`tests/controller_test.cpp` checks fail-closed default state, scope gating, unsupported backends, invalid selections, generation counter and touch hitboxes at 1280x720. `.github/workflows/firmware-source.yml` compiles with host g++ and attempts a pinned PlatformIO ESP32-P4 firmware compile. Outcomes must be recorded after CI runs; a successful compile does **not** prove screen, radio or USB behavior.
+`tests/controller_test.cpp` checks fail-closed default state, scope gating, unsupported backends, invalid selections, generation counter and touch hitboxes at 1280x720. `.github/workflows/firmware-source.yml` compiles with host g++ and attempts a pinned PlatformIO ESP32-P4 firmware compile. Source CI **passed** on run 43451215326 at head `337995f` (host C++ tests, Windows PowerShell script syntax, PlatformIO ESP32-P4 compile). This does **not** prove screen, radio or USB behavior.
 
 ## Windows reproducible build gate
 After PlatformIO is installed, run `scripts/Build-Tab5Network.ps1` from PowerShell. Capture success/failure, Git SHA, output firmware size and SHA-256 without uploading. **Do not flash before backup gates.** The command is committed but has not been run on the user's Windows laptop.
