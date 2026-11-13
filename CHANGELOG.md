@@ -6,6 +6,7 @@ This is a **living, append-only record** of work, including features that are la
 - Commit: `63dbda1` on `feature/touch-ui-preflight-v0`; proposed PR pending.
 - Added six large Tab5 touch hitboxes and actual UI navigation on M5Unified with honest unimplemented/scope-required result pages; **no network probes or fabricated measurements**.
 - Added isolated pure C++ `Controller` and geometry logic, desktop C++ test executable, and GitHub Actions host plus PlatformIO compile jobs.
+- Touch fix `8981e61`: evaluate `wasClicked()` without a `getCount() > 0` guard so release events are not discarded after the finger lifts (per M5Stack API example).
 - Added the read-only `scripts/Inspect-Tab5.ps1` to discover USB ports/tools and optionally run an operator-initiated ESP32-P4 chip ID read. No flash writes.
 - Selected documented source tags: pioarduino 54.03.21, M5Unified 0.2.23, M5GFX 0.2.30. Build results and LCD revision are not yet certified at this entry.
 - Schema/state change: first in-code `State {screen, selected, outcome, authorized_scope, generation}` with fail-closed host test authorization; no saved network targets or secrets.
