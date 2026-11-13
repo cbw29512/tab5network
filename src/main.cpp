@@ -21,9 +21,10 @@ void setup() {
 }
 void loop() {
   M5.update();
-  if (pocket::display_ready() && M5.Touch.getCount() > 0) {
+  if (pocket::display_ready()) {
+    // Read release events even when getCount() has fallen to zero.
+    // This matches the manufacturer M5Unified touch-click example.
     const auto touch = M5.Touch.getDetail(0);
-    // Edge triggered: holding a finger must not run a test repeatedly.
     if (touch.wasClicked()) pocket::touch_at(controller, touch.x, touch.y);
   }
   delay(15);
