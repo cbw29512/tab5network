@@ -32,6 +32,9 @@
 - Real hardware acceptance tests and USB flashing/restore.
 - Actual verified build binaries, flash/restore tests or release tags. Toolchain versions have been selected from upstream documentation but are not yet a successful build.
 
+- **User-verified 2026-11-13:** the operator reported the private two-pass firmware backup as verified. The final PASS/hash output was not independently supplied or inspected; record this as **user-reported verified**, not independently certified. Continue to protect the private images and do not commit them to GitHub.
+- **Startup UI contract:** the former Pocket DM face/avatar will not appear in the replacement firmware. The six touch buttons are the home screen immediately after display initialization. Current source already draws Home at startup; physical installation/testing remains pending.
+
 ## Locked product decisions
 1. Touch-first UI with large buttons. No terminal entry on the Tab5.
 2. Six MVP controls: Wi-Fi Scan, Devices, Ping, Port Test, DNS, Run All.
@@ -42,7 +45,7 @@
 7. GitHub is canonical. Every feature/change/removal updates documentation with code.
 
 ## Immediate next work item (one at a time)
-**Finish and verify the already-started guarded double-read backup. The supplied transcript ends after `flash-pass1.bin` was read (16,777,216 bytes); do NOT launch another backup process while the first is active. Confirm `flash-pass2.bin`, matching SHA-256 hashes and private manifest before treating the backup as complete.** Preserve the created directory privately and report only PASS/FAIL, backup sizes, and matching hash (not raw images or private device identifiers). Independently back up the microSD, record LCD sticker revision, and assess secure-boot/flash-encryption restoration limitations. No firmware upload until all backup and restore gates are met.
+**Preserve the operator-reported verified dual-read firmware backup.** The final matching-hash output was not independently shared; independently review the private manifest and hashes locally before flashing. Next: separate private microSD backup, confirm the LCD revision sticker, assess restore feasibility, then perform a local Windows build. Preserve the created directory privately and report only PASS/FAIL, backup sizes, and matching hash (not raw images or private device identifiers). Independently back up the microSD, record LCD sticker revision, and assess secure-boot/flash-encryption restoration limitations. No firmware upload until all backup and restore gates are met.
 
 ## Evidence for next milestone
 - Redacted Windows port listing; exact LCD sticker text.

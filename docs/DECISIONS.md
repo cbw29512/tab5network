@@ -63,6 +63,14 @@ Use a new numbered entry when any existing decision is amended. Keep the old ent
 - Decision: use a guarded read-only PowerShell backup script to produce two full 16 MB images outside GitHub, compare sizes/SHA-256, and write a private TNK1 manifest. Do not overwrite existing backups or imply that matching hashes prove flash-restoration feasibility.
 - Verification: `flash-id` passed; backup execution, flash encryption state, restore plan and microSD copy still pending. No upload/erase command permitted during this stage.
 
+## ADR-010 — Replace Pocket DM face with touchscreen diagnostic home
+- Date: 2026-11-13
+- Status: **accepted**
+- Context: The physical Tab5 previously displayed a face/avatar under Pocket DM. The operator explicitly wants the new network-testing buttons **on the touchscreen** instead of that face.
+- Decision: The replacement firmware boots directly to the six-button Home screen, without animated face, avatar or dismissal, and all six controls are touch hitboxes. Back returns to Home.
+- Implementation: `src/main.cpp` already draws the `Controller` Home state immediately following display initialization, and `src/screens.cpp` renders six on-screen buttons. Add source-level navigation assertions and physical acceptance case UI-00.
+- Verification: C++ CI must pass; actual display behavior is unverified until flashing after backup, SD preservation, LCD revision and recovery checks. The current old firmware has **not** been modified.
+
 ## Decision template
 ```markdown
 ## ADR-NNN — Title

@@ -32,6 +32,17 @@ int main() {
     const Rect r = home_slot(i, w, h);
     assert(home_hit(r.x + r.width / 2, r.y + r.height / 2, w, h) == i);
   }
+  // Boot contract: every diagnostic is entered from an on-screen Home button,
+  // then returns to that same dashboard. There is no Face screen state.
+  for (int i = 0; i < 6; ++i) {
+    Controller on_screen;
+    assert(on_screen.state().screen == Screen::Home);
+    assert(on_screen.select(static_cast<Tool>(i)));
+    assert(on_screen.state().screen == Screen::Details);
+    assert(on_screen.state().selected == static_cast<Tool>(i));
+    on_screen.back();
+    assert(on_screen.state().screen == Screen::Home);
+  }
   assert(home_hit(0, 0, w, h) == -1);
   assert(home_hit(-1, 200, w, h) == -1);
   assert(home_hit(20, 200, 100, 100) == -1);

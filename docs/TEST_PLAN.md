@@ -24,6 +24,7 @@ After PlatformIO is installed, run `scripts/Build-Tab5Network.ps1` from PowerShe
 ## Required scenarios
 | ID | Test | Expected observation |
 |---|---|---|
+| UI-00 | Cold boot after flashing replacement | Six large on-screen buttons appear directly; no face/avatar, overlay or face-dismiss step. Verify on device, not in a mockup |
 | UI-01 | Tap every home button | Correct screen, no double-trigger |
 | UI-02 | Tap CANCEL mid-scan | No new probes scheduled; partial results preserved |
 | UI-03 | Disconnect Wi-Fi during run | Clear error; return home; no stale result |

@@ -6,7 +6,7 @@ Status: **approved product direction; implementation not yet certified**. Update
 A portable, touch-only network diagnostic instrument for networks the operator owns or is explicitly authorized to test. A Windows laptop is used for firmware builds/flashing over USB-C; normal testing does not require a computer or NucBox.
 
 ## Required screens and interactions
-1. **Home:** six large buttons — WI-FI SCAN, DEVICES, PING, PORT TEST, DNS, RUN ALL — plus settings, battery/connection indicator where supported, and report access.
+1. **Home / cold boot:** immediately show six large *on-screen touch buttons* — WI-FI SCAN, DEVICES, PING, PORT TEST, DNS, RUN ALL — plus settings, battery/connection indicator where supported, and report access. **No Pocket DM face/avatar or animated face screen, face overlay, splash requiring dismissal, or hardware-button navigation.**
 2. **Scope:** host tests require an explicitly approved local IPv4 subnet or individual host. Default is **no authorized target**; no automatic sweep of every reachable network.
 3. **Test:** show target, elapsed time, progress, current step, measured values and prominent CANCEL. Every test has timeout/failure/unsupported feedback.
 4. **Results:** human-readable graphical bars/tables and clear measured values (SSID/channel/RSSI, discovered IPs, packet loss/latency, TCP reachability, DNS response). A reachable port is not inherently a vulnerability.

@@ -2,6 +2,12 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — On-screen buttons replace the face; user reports backup verified
+- Product clarification: **no Pocket DM face/avatar, overlay or animated startup view**. The replacement firmware must boot straight to the six large on-screen diagnostic buttons, with Back returning to that same home screen. No additional physical button needed for navigation.
+- Existing source already initializes the Home dashboard. Added explicit boot contract comment and source regression checks for all six button-to-details-to-home transitions.
+- **User-reported:** the private double-read 16 MB flash backup has been verified. Only the first pass appeared in the supplied long log; final output and manifest have **not** been independently inspected here. No private hashes, backup files or identifying information committed.
+- Next: preserve microSD separately, confirm LCD revision and flash recovery limitations before replacing old firmware. Device still runs previous firmware until explicitly flashed; on-device UI acceptance **not yet performed**.
+
 ## 2026-11-13 — First full flash read observed; verification remains open
 - User-supplied laptop log shows `flash-pass1.bin` completed: **16,777,216 bytes**, read from address 0x00000000 using `esptool` in 133.9 seconds.
 - The supplied excerpt contains **no** completed `flash-pass2.bin`, no hash comparison, and no final `PASS` or manifest creation. Record this as partial read-only backup progress only.

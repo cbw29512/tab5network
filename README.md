@@ -30,6 +30,9 @@ A touch-first, portable, **authorized** network diagnostic instrument. All on-de
 
 **Operating rule:** standalone basic tests first; NucBox integration or advanced tools may be added later, but are not prerequisites for the MVP. Never run unbounded scans, deauthentication, exploits, or covert collection.
 
+## Startup UI contract
+The old Pocket DM face/avatar is **not part of this project**. On boot, the replacement firmware must open the full-screen six-button diagnostic dashboard immediately. Buttons are drawn on and operated through the Tab5 touchscreen, not through a face overlay, animated avatar or physical-button menu. This is already the design of the committed source, but **the existing Tab5 still shows its previous firmware until a safe flash is completed**. Do not treat this behavior as hardware-tested until the on-device acceptance case UI-00 passes.
+
 ## First firmware source preview
 Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens.cpp`, backed by pure C++ state and touch-hitbox logic in `include/` and `src/` with `tests/controller_test.cpp`.
 

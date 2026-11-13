@@ -16,7 +16,9 @@ void setup() {
     Serial.println("ERROR: Tab5 display initialization did not succeed");
     return;
   }
-  Serial.println("INFO: Tab5 Network Test Lab touch preview started");
+  // Boot directly into six touchscreen controls; no previous Pocket DM face,
+  // animated avatar, physical-button navigation, or blocking splash screen.
+  Serial.println("INFO: Tab5 Network Test Lab touch dashboard started");
   pocket::draw_screen(controller.state());
 }
 void loop() {
