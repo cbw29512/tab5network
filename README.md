@@ -1,7 +1,7 @@
 # Tab5 Network Tester
 **Working name:** Pocket Kali / Tab5 Network Test Lab  
 **Target:** M5Stack Tab5 (ESP32-P4 + ESP32-C6), controlled from a Windows laptop over USB-C  
-**Status:** DOCUMENTATION BASELINE — firmware is **not yet built, installed, or hardware-certified**.  
+**Status:** SOURCE PREVIEW — touch UI firmware is committed on a feature branch; it is **not yet proven to build, installed, or hardware-certified**.  
 **Repository visibility:** PUBLIC. Never commit network secrets, private scan data, firmware dumps, or personal information.
 
 A touch-first, portable, **authorized** network diagnostic instrument. All on-device tests are selected by large buttons, show visual progress/results, and can export reports to microSD. No command line is required on the Tab5. PowerShell on the Windows development laptop handles setup, build, backup and flashing.
@@ -30,10 +30,21 @@ A touch-first, portable, **authorized** network diagnostic instrument. All on-de
 
 **Operating rule:** standalone basic tests first; NucBox integration or advanced tools may be added later, but are not prerequisites for the MVP. Never run unbounded scans, deauthentication, exploits, or covert collection.
 
+## First firmware source preview
+Branch: `feature/touch-ui-preflight-v0`. Source: `src/main.cpp` and `src/screens.cpp`, backed by pure C++ state and touch-hitbox logic in `include/` and `src/` with `tests/controller_test.cpp`.
+
+**Important:** the six buttons are functional UI navigation only. Wi-Fi scanning and host testing are NOT implemented. Wi-Fi reports `TEST BACKEND NOT INSTALLED`; host tests report `AUTHORIZED TARGET REQUIRED`. The preview does not send probes and must not be mistaken for a completed tester. Code builds and real-device tests must pass before flashing.
+
+The pinned `platformio.ini` uses pioarduino `54.03.21`, M5Unified `0.2.23` and M5GFX `0.2.30`, matching the M5Stack minimum for recent display revisions. GitHub firmware compile runs in `.github/workflows/firmware-source.yml`.
+
+Read-only laptop inspection: `powershell -NoProfile -File scripts/Inspect-Tab5.ps1`. See `docs/SETUP_WINDOWS.md`.
+
 ## Current milestone
 - [x] Existing GitHub repository identified.
 - [x] Project scope, documentation and data/state contracts committed.
 - [x] Living-document GitHub Actions check passed ([run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566)); future code pull requests must update state and changelog.
+- [x] Initial source-level touch navigation implementation committed (not device-tested).
+- [ ] Confirm GitHub C++ and PlatformIO compile gates on the feature branch.
 - [ ] Confirm physical Tab5 screen-controller revision, USB COM port, Wi-Fi coprocessor firmware and microSD behavior.
 - [ ] Establish and verify a restorable backup of the current firmware and SD contents.
 - [ ] Build/flash touch UI prototype and validate every button.
