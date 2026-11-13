@@ -27,6 +27,9 @@ The built-in ESP32-C6 is a **2.4 GHz** radio; it cannot scan 5 GHz access points
 - esptool: https://docs.espressif.com/projects/esptool/en/latest/esp32p4/
 - PIO Arduino platform example is included in M5Stack docs. Its branch and library versions are **unverified for this device**; do not freeze toolchain versions based on a guess.
 
+## First toolchain source baseline
+The feature branch `feature/touch-ui-preflight-v0` pins official M5Stack documented PlatformIO baseline `54.03.21` and minimum compatible M5Unified `0.2.23` / M5GFX `0.2.30`. The Git refs were verified to exist; actual PlatformIO compile and local Windows USB flashing have **not yet been verified**.
+
 ## Physical inventory — fill at first laptop session
 | Measurement | Actual value |
 |---|---|
