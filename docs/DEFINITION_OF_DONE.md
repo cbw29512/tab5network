@@ -18,7 +18,7 @@ A portable, touch-only network diagnostic instrument for networks the operator o
 | ID | Verification | Status |
 |---|---|---|
 | A0 | GitHub source, docs, decisions, change log, reproducible instructions | Documentation committed; full reproducible build pending |
-| A1 | Confirm board revision, boot/download procedure, Windows USB port and toolchain | Pending physical test |
+| A1 | Confirm board revision, boot/download procedure, Windows USB port and toolchain | ESP32-P4 v1.3/16 MB/COM3 confirmed; LCD revision and local build pending |
 | A2 | Backup ESP32-P4 flash, copy microSD content, SHA-256 and prove restoration method | Pending physical test |
 | A3 | Full touchscreen UI, button navigation and cancellation | Not implemented |
 | A4 | Real on-device 2.4 GHz Wi-Fi scanning and authorized network connection | Not implemented |

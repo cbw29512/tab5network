@@ -20,7 +20,7 @@ M5Stack: with a USB cable/battery connected, press and hold the Reset/Power cont
 ## Stage 2 — read and back up flash
 Espressif documents reading flash with `read-flash 0 ALL`, which automatically uses the detected flash size when supported. Official instructions: https://docs.espressif.com/projects/esptool/en/latest/esp32p4/esptool/basic-commands.html
 
-**Operator-controlled example — NOT TESTED on this user's device.** Replace COMx with the **verified** port. Keep output somewhere private, not in the repository:
+**Operator-controlled example — original manual fallback.** COM3 was chip-confirmed as ESP32-P4 v1.3/16 MB on 2026-11-13. Prefer the guarded, committed `scripts/Backup-Tab5Flash.ps1` after its CI syntax gate passes: it performs **two independent full flash reads** and compares byte counts and SHA-256 hashes, refusing an unexpected chip/flash size. It stores the backup under `%USERPROFILE%\\Tab5PrivateBackups` by default, *not* inside the public repository. The actual backup has **not yet been performed**. Manual fallback (not yet exercised on hardware):
 ```powershell
 try {
     $ErrorActionPreference = "Stop"
@@ -40,7 +40,7 @@ try {
     Write-Error "STOP: Tab5 flash backup was not verified: $($_.Exception.Message)"
 }
 ```
-Record actual size, SHA-256, flash-ID output and tool version in a **private** backup manifest. Ideally perform a second read and compare hashes. A hash and successful read alone do not demonstrate restoration: retain restore documentation and confirm the firmware format/security state.
+Record actual size, SHA-256, flash-ID output and tool version in a **private** backup manifest. The guarded script performs a second read and compares hashes. A hash and successful read alone do not demonstrate restoration: retain restore documentation and confirm the firmware format/security state.
 
 ## Stage 3 — protect microSD contents
 1. Shut down the Tab5 properly, remove microSD, and copy **all files** to a private directory on the laptop or external storage.
@@ -68,7 +68,7 @@ If the new firmware will not boot or respond:
 ## Proof to record in PROJECT_STATE.md before first flash
 [ ] USB COM port and hardware ID confirmed
 [ ] LCD controller revision confirmed
-[ ] Flash ID/size recorded
+[x] Flash ID/size recorded — ESP32-P4 v1.3, 16 MB, esptool 5.6.0 (2026-11-13)
 [ ] Full flash dump created and hashed privately
 [ ] Independent SD copy and hash manifest created privately
 [ ] Restore plan tested or recovery limits explicitly accepted

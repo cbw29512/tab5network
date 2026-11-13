@@ -33,11 +33,11 @@ The feature branch `feature/touch-ui-preflight-v0` pins official M5Stack documen
 ## Physical inventory — fill at first laptop session
 | Measurement | Actual value |
 |---|---|
-| Rear sticker / LCD driver revision | NOT RECORDED |
+| Rear sticker / LCD driver revision | NOT RECORDED — required before flashing |
 | Windows PowerShell version | NOT RECORDED |
-| Connected COM port (if enumerated) | NOT RECORDED |
-| USB VID/PID | NOT RECORDED |
-| Existing firmware / partition layout | NOT RECORDED |
+| Connected COM port (if enumerated) | COM3 — ESP32-P4 v1.3, confirmed via esptool 5.6.0 on 2026-11-13 |
+| USB VID/PID | VID_303A / PID_1001 (no unique device ID stored) |
+| Existing firmware / partition layout | Detected SPI flash 16 MB (manufacturer 0x46, device 0x4018); existing partition map/protection unknown |
 | Existing flash backup SHA-256 | NOT RECORDED |
 | microSD backup directory and hash manifest | NOT RECORDED |
 | Verified toolchain and library commits | NOT RECORDED |

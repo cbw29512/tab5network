@@ -5,6 +5,12 @@
 ## Initial source-test coverage added (not a device pass)
 `tests/controller_test.cpp` checks fail-closed default state, scope gating, unsupported backends, invalid selections, generation counter and touch hitboxes at 1280x720. `.github/workflows/firmware-source.yml` compiles with host g++ and attempts a pinned PlatformIO ESP32-P4 firmware compile. Source CI **passed** on run 43451215326 at head `337995f` (host C++ tests, Windows PowerShell script syntax, PlatformIO ESP32-P4 compile). This does **not** prove screen, radio or USB behavior.
 
+## Read-only flash backup validation gate (still pending on actual hardware)
+- 2026-11-13: ESP32-P4 identification succeeded on COM3 with esptool 5.6.0 (chip v1.3 / 16 MB).
+- `scripts/Backup-Tab5Flash.ps1` must refuse wrong ports, unexpected chip size and backup paths inside the repo; should perform two independent `read-flash 0 ALL` operations, verify **16,777,216 bytes each**, compare SHA-256 and leave old Pocket DM flash unchanged.
+- A passing script run is only a **read consistency check**, not proof that raw flash is restorable under secure boot/flash encryption. Record restoration security limitations and back up microSD independently.
+- A second verified physical run and private manifest are pending. CI syntax validation is required but does not prove actual flash reads.
+
 ## Windows reproducible build gate
 After PlatformIO is installed, run `scripts/Build-Tab5Network.ps1` from PowerShell. Capture success/failure, Git SHA, output firmware size and SHA-256 without uploading. **Do not flash before backup gates.** The command is committed but has not been run on the user's Windows laptop.
 

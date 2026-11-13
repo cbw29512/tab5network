@@ -31,13 +31,13 @@ try {
 } catch { Write-Error "Device inspection failed: $($_.Exception.Message)" }
 ```
 
-**Observed laptop checkpoint (2026-11-13):** PowerShell 5.1, Python 3.12 and Git were detected. The only enumerated USB COM device was **COM3** with Espressif `VID_303A&PID_1001`; device identity is not yet chip-confirmed. PlatformIO (`pio`) was not on PATH. The first invocation failed because Windows script execution was disabled; a *child-process* `-ExecutionPolicy Bypass` retry succeeded without changing the permanent policy. Some managed machines may enforce Group Policy and still refuse, in which case do not change policy globally; use the manual CIM inspection fallback.
+**Observed laptop checkpoint (2026-11-13):** PowerShell 5.1, Python 3.12 and Git were detected. The only enumerated USB COM device was **COM3** with Espressif `VID_303A&PID_1001`; subsequently `esptool 5.6.0 --chip esp32p4 --port COM3 flash-id` **confirmed ESP32-P4 v1.3 and 16 MB flash**. PlatformIO (`pio`) was not on PATH. The first invocation failed because Windows script execution was disabled; a *child-process* `-ExecutionPolicy Bypass` retry succeeded without changing the permanent policy. Some managed machines may enforce Group Policy and still refuse, in which case do not change policy globally; use the manual CIM inspection fallback.
 
 The inspector now redacts device-instance suffixes so routine diagnostic output is safe to share. The **full unique Windows PNPDeviceID must never be put into public GitHub history**.
 
 The optional `-VerifyChip -Port COMx` performs an explicit **read-only** chip ID query only after you verify the actual COM port and put the device in ROM download mode. Do not use it to auto-select a device.
 
-Before using the optional chip probe, confirm that COM3 disappears when the **Tab5** is unplugged and reappears when reconnected, or verify its identity in Device Manager. The port might change during ROM download. Then install/check `esptool` and run `flash-id` in a later step. No flash/erase command is part of this inspection.
+The Windows COM3 `flash-id` command now confirms the ESP32-P4 v1.3 and 16 MB flash on this laptop. Port numbering may change on another machine or after reconnecting. The chip is identified but LCD revision, storage backup and secure-boot/flash-encryption recovery compatibility remain unknown. No flash/erase command is part of this inspection.
 
 Manual fallback:
 ```powershell
@@ -60,7 +60,20 @@ Record the correct COM port and hardware ID after verifying the device in Device
 ## 3. Identify the screen revision
 Read the sticker on the rear. Note whether it is ILI9881C/GT911 or ST7123/ST7121. Take a photo locally if helpful, but never commit personal metadata. Confirm the active firmware's appearance before installing a replacement.
 
-## 4. Read the recovery procedure
+## 4. Make a private, read-only flash backup (next gate)
+After reviewing `scripts/Backup-Tab5Flash.ps1` and checking that **COM3 still belongs to this ESP32-P4**, run from the feature-branch root:
+
+```powershell
+try {
+    $ErrorActionPreference = 'Stop'
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\Backup-Tab5Flash.ps1 -Port COM3
+    if ($LASTEXITCODE -ne 0) { throw 'Private flash backup failed' }
+} catch { Write-Error "Private Tab5 backup stopped: $($_.Exception.Message)" }
+```
+
+This script is a **read-only flash operation**, NOT a firmware restore or microSD backup. By default it creates a new timestamped directory under `%USERPROFILE%\\Tab5PrivateBackups` and writes two 16 MB raw images plus a private SHA-256 manifest. Never upload the images or manifest to GitHub. If the hash comparison fails, **stop** and keep the files private for inspection. The code is designed to be idempotent across runs (no overwrite), but execution on this laptop is still pending.
+
+## 5. Read the recovery procedure
 See [FLASH_RECOVERY.md](FLASH_RECOVERY.md). Copy the microSD separately, and take a verified physical flash backup before overwriting the current Pocket DM firmware.
 
 ## 5. Build prerequisites (not yet installed or pinned)

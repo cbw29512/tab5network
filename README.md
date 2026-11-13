@@ -45,9 +45,9 @@ Read-only laptop inspection: `powershell.exe -NoProfile -ExecutionPolicy Bypass 
 - [x] Living-document GitHub Actions check passed ([run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566)); future code pull requests must update state and changelog.
 - [x] Initial source-level touch navigation implementation committed (not device-tested).
 - [x] GitHub C++ tests, Windows PowerShell parse, and PlatformIO compile passed ([run 43451215326](https://github.com/cbw29512/tab5network/actions/runs/43451215326)).
-- [x] First Windows read-only inspection succeeded: COM3 Espressif VID/PID reported; Python 3.12 and Git present; PlatformIO not on PATH. Device-chip identity/LCD revision not yet verified.
+- [x] Windows flash-ID completed: COM3 is ESP32-P4 rev v1.3 with 16 MB flash; esptool 5.6.0 installed; LCD revision remains unverified.
 - [ ] Confirm physical Tab5 screen-controller revision and COM3-to-Tab5 association, Wi-Fi coprocessor firmware and microSD behavior.
-- [ ] Establish and verify a restorable backup of the current firmware and SD contents.
+- [ ] Execute `scripts/Backup-Tab5Flash.ps1` to create two matching private flash dumps, then independently back up microSD and verify recovery feasibility. Script committed; actual backups **pending**.
 - [ ] Build/flash touch UI prototype and validate every button.
 - [ ] Integrate and test each bounded network diagnostic on real hardware.
 - [ ] Save/reopen report on microSD; pass unattended crash and cancellation tests.

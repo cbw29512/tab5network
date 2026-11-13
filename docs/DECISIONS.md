@@ -56,6 +56,13 @@ Use a new numbered entry when any existing decision is amended. Keep the old ent
 - Verification: User's first inspection succeeded; new redaction code requires a repeat/local verification. No platform policy change is required; managed Group Policy may still block execution.
 - Scope: This is development-tool convenience and output privacy, not permission to install unreviewed scripts.
 
+## ADR-009 — Preserve original firmware with verified, private dual-read flash backup
+- Date: 2026-11-13
+- Status: **accepted**
+- Context: Real Windows `esptool 5.6.0 flash-id` confirmed ESP32-P4 revision v1.3 and 16 MB flash on COM3. Previous Pocket DM firmware may contain private settings; its microSD data is separate.
+- Decision: use a guarded read-only PowerShell backup script to produce two full 16 MB images outside GitHub, compare sizes/SHA-256, and write a private TNK1 manifest. Do not overwrite existing backups or imply that matching hashes prove flash-restoration feasibility.
+- Verification: `flash-id` passed; backup execution, flash encryption state, restore plan and microSD copy still pending. No upload/erase command permitted during this stage.
+
 ## Decision template
 ```markdown
 ## ADR-NNN — Title

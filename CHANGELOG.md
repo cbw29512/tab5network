@@ -2,6 +2,14 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — ESP32-P4 chip confirmed and private backup tooling added
+- **Operator-verified:** Windows COM3 is ESP32-P4 revision v1.3, 400 MHz, dual core + LP core; flash manufacturer 0x46/device 0x4018, **16 MB**. `esptool` 5.6.0 installed successfully. No data written; MAC intentionally excluded from public project history.
+- Added `scripts/Backup-Tab5Flash.ps1`: on an explicitly chosen COM port, rechecks chip and flash size, reads entire flash twice into separate **private non-GitHub files**, verifies 16,777,216 bytes each and matching SHA-256, and writes a private manifest. No erase/write/upload/SD modification.
+- Schema: private `TNK1-FLASH-BACKUP` manifest (`chip`, `flash_bytes`, two filenames, `matching_sha256`, `restoration_tested=false`, `micro_sd_backed_up=false`). Existing firmware and project report schema unchanged.
+- Safeguards: refuses missing/wrong Espressif port, wrong chip/flash size, backup paths inside the repo, existing session folder, incomplete or inconsistent reads; sanitizes MAC from tool output. Partial or mismatched dumps are **not** marked successful.
+- Tests: real `flash-id` passed; double-read backup itself **not executed**. GitHub PowerShell syntax/CI verification pending at this entry. Separate microSD backup and restoration readiness remain open. No flash performed.
+- Next blocker: complete private dual-read firmware backup, preserve microSD, inspect LCD sticker before any flash.
+
 ## 2026-11-13 — Windows hardware preflight and log privacy repair
 - Operator cloned the repository and checked out `feature/touch-ui-preflight-v0` on Windows. Initial inspection was blocked by Windows PowerShell's script policy; executing the reviewed script in a separate child process using `-ExecutionPolicy Bypass` succeeded, without changing permanent policy.
 - Observed PowerShell 5.1, Git installed, Python 3.12 installed; `pio` not on PATH. A single serial device appeared on COM3 with Espressif VID/PID 303A/1001; no proof yet that this is the Tab5 until physical disconnect/reconnect or read-only `flash-id` confirmation.
