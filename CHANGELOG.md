@@ -2,6 +2,11 @@
 
 This is a **living, append-only record** of work, including features that are later changed or removed. Do not silently rewrite history. For a source change, include the GitHub commit/PR, actual tests run, and any unresolved issues. Date entries in ISO 8601.
 
+## 2026-11-13 — First full flash read observed; verification remains open
+- User-supplied laptop log shows `flash-pass1.bin` completed: **16,777,216 bytes**, read from address 0x00000000 using `esptool` in 133.9 seconds.
+- The supplied excerpt contains **no** completed `flash-pass2.bin`, no hash comparison, and no final `PASS` or manifest creation. Record this as partial read-only backup progress only.
+- Do not restart another backup while the existing script runs. Next checkpoint: final script output showing both matching hashes, separate microSD preservation, and recovery feasibility assessment. No firmware write reported.
+
 ## 2026-11-13 — ESP32-P4 chip confirmed and private backup tooling added
 - **Operator-verified:** Windows COM3 is ESP32-P4 revision v1.3, 400 MHz, dual core + LP core; flash manufacturer 0x46/device 0x4018, **16 MB**. `esptool` 5.6.0 installed successfully. No data written; MAC intentionally excluded from public project history.
 - Added `scripts/Backup-Tab5Flash.ps1`: on an explicitly chosen COM port, rechecks chip and flash size, reads entire flash twice into separate **private non-GitHub files**, verifies 16,777,216 bytes each and matching SHA-256, and writes a private manifest. No erase/write/upload/SD modification.
