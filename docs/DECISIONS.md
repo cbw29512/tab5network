@@ -40,6 +40,14 @@ Use a new numbered entry when any existing decision is amended. Keep the old ent
 - Pending evidence: exact LCD controller, current ESP32-C6 host Wi-Fi capability, native USB upload, SD library and clean reproducible Windows build.
 - No pinned toolchain or runtime framework is approved yet.
 
+## ADR-007 — First build is fail-closed touch navigation, not a simulated scanner
+- Date: 2026-11-13
+- Status: **accepted**
+- Decision: Build hardware-targeted touch UI source using pinned official M5Stack Arduino/PlatformIO baseline. All network tools remain unimplemented until approved profiles and real C6 driver adapters exist.
+- Why: Real touch geometry and screen compatibility can be validated independently from network permissions and C6 firmware. No fabricated security findings.
+- Impact: Pure state controller and hitbox geometry can be host-tested. Only a verified build and backed-up Tab5 can be flashed.
+- Follow-up: compile verification, hardware touch acceptance, then explicit user-selected scope and genuine Wi-Fi adapter.
+
 ## Decision template
 ```markdown
 ## ADR-NNN — Title
