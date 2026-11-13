@@ -11,7 +11,9 @@
 - Repository `cbw29512/tab5network` exists, and is **public**.
 - The Tab5 previously hosted Pocket DM; preservation of the old firmware and SD contents takes priority over new flashing.
 - Manufacturer documents ESP32-P4 main controller, ESP32-C6 2.4 GHz radio, 16 MB flash, 32 MB PSRAM and 1280×720 touch display. LCD driver revision varies.
-- The project documentation and workflow baseline are being committed to GitHub.
+- Full initial documentation and living-change workflow are committed to GitHub.
+- Documentation check is active in GitHub Actions: [run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566) **passed** (source Markdown integrity only, not firmware tests).
+- Code pull requests changing source/tests/build scripts require changes to both PROJECT_STATE.md and CHANGELOG.md, enforced by scripts/check_docs.py.
 
 ## Not verified / not implemented
 - Current Tab5 COM port, exact LCD/touch hardware revision, flash security configuration and old firmware backup.
