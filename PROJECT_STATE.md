@@ -12,7 +12,7 @@
 - The Tab5 previously hosted Pocket DM; preservation of the old firmware and SD contents takes priority over new flashing.
 - Manufacturer documents ESP32-P4 main controller, ESP32-C6 2.4 GHz radio, 16 MB flash, 32 MB PSRAM and 1280×720 touch display. LCD driver revision varies.
 - Full initial documentation and living-change workflow are committed to GitHub.
-- Feature branch `feature/touch-ui-preflight-v0` commit `63dbda1` contains the first source-level ESP32-P4 touch dashboard and read-only Windows USB inspection script.
+- Feature branch `feature/touch-ui-preflight-v0` commit `63dbda1` contains the first source-level ESP32-P4 touch dashboard and read-only Windows USB inspection script. Build-only PowerShell script added at commit `1c3f1de` (prints SHA-256; does not flash).
 - Dashboard has six large touch buttons, geometry-tested hit detection, and honest Scope Required / Unsupported result screens. **No network scans or packets are implemented.**
 - Touch release handling patched at `8981e61` to avoid suppressing `wasClicked()` after finger lift; physical verification is still required.
 - PlatformIO config pins documented M5Stack-supported upstream tags; GitHub compile validation is pending as this entry is written.
