@@ -15,7 +15,8 @@
 - Feature branch `feature/touch-ui-preflight-v0` commit `63dbda1` contains the first source-level ESP32-P4 touch dashboard and read-only Windows USB inspection script. Build-only PowerShell script added at commit `1c3f1de` (prints SHA-256; does not flash).
 - Dashboard has six large touch buttons, geometry-tested hit detection, and honest Scope Required / Unsupported result screens. **No network scans or packets are implemented.**
 - Touch release handling patched at `8981e61` to avoid suppressing `wasClicked()` after finger lift; physical verification is still required.
-- PlatformIO config pins documented M5Stack-supported upstream tags; GitHub compile validation is pending as this entry is written.
+- PlatformIO config pins documented M5Stack-supported upstream tags. Earlier baseline CI run `43450548417` passed both pure C++ core tests and a Linux PlatformIO ESP32-P4 compile. Latest commits (including touch-event fix and PowerShell checker) need fresh final-head checks before claiming readiness.
+- Windows PowerShell syntax check added at commit `dcba4ec` (unverified until CI). Physical Windows execution and actual Tab5 USB remain pending.
 - Documentation check is active in GitHub Actions: [run 43448788566](https://github.com/cbw29512/tab5network/actions/runs/43448788566) **passed** (source Markdown integrity only, not firmware tests).
 - Code pull requests changing source/tests/build scripts require changes to both PROJECT_STATE.md and CHANGELOG.md, enforced by scripts/check_docs.py.
 
