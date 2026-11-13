@@ -2,6 +2,9 @@
 
 **Never substitute mocked results for real network diagnostics on hardware.** Sample data may be used in a UI mockup only if labeled clearly.
 
+## Initial source-test coverage added (not a device pass)
+`tests/controller_test.cpp` checks fail-closed default state, scope gating, unsupported backends, invalid selections, generation counter and touch hitboxes at 1280x720. `.github/workflows/firmware-source.yml` compiles with host g++ and attempts a pinned PlatformIO ESP32-P4 firmware compile. Outcomes must be recorded after CI runs; a successful compile does **not** prove screen, radio or USB behavior.
+
 ## Test tiers
 - **T0 source checks:** schema parsing, pure state transitions, error logging, input validation, report serialization, cancellation, bounded target enumeration. Run offline on a developer laptop.
 - **T1 host simulation:** fake Wi-Fi/ICMP/TCP/DNS adapters produce success, timeout, partial, unsupported, SD missing/full and cancellation. No packet transmission.
